@@ -107,7 +107,6 @@
             NewPhoneInput.Name = "NewPhoneInput";
             NewPhoneInput.Size = new Size(189, 23);
             NewPhoneInput.TabIndex = 1;
-            NewPhoneInput.TextChanged += NewPhoneInput_TextChanged;
             // 
             // tableLayoutPanel3
             // 

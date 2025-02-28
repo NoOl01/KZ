@@ -16,7 +16,7 @@ namespace WF
         {
             // Инициализация базовых компонентов по умолчанию
             InitializeComponent();
-            // Полная инициализация данных чтобы
+            // Полная инициализация данных
             _context = new DbConnect();
             _subOrganization = new SubOrganization();
             // Запуск функции сразу при открытии окна
@@ -63,26 +63,34 @@ namespace WF
         // Функция выбора из ветки "подорганизаций"
         private void TreeViewOrganizations_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            // провераям что Тег ветки является нашей "подорганиз"
+            // провераям что Тег ветки является "подорганизцией"
             if (e.Node!.Tag is SubOrganization subOrg)
             {
-                EmployeePanel.Controls.Clear();
-                LoadEmployees(subOrg.Id);
-                _subOrganization = subOrg;
+                EmployeePanel.Controls.Clear(); // Очищаем панель сотрудников
+                                                // для избежание дублирования или вывод лишних данных при повторном использовании функции
+                LoadEmployees(subOrg.Id); // Вызываем функцию LoadEmployees и передаем в нее Id "подорганизации"
+                _subOrganization = subOrg; // Записываем в нашу глобальную переменную нашу "подорганизацию"
             }
             else
             {
-                EmployeePanel.Controls.Clear(); //
+                // В случае если условие выше не выполняется просто очищаем панель от лишних данных
+                EmployeePanel.Controls.Clear();
             }
         }
+
+        // Функция загрузки сотрудников которая принимает Id "Под организации"
         private void LoadEmployees(long subOrgId)
         {
+            // создаем переменную employees куда загружаем список наших сотрудников
             var employees = _context.Employees
-                .Where(emp => emp.SubOrganization!.Id == subOrgId)
-                .ToList();
+                .Where(emp => emp.SubOrganization!.Id == subOrgId) // С помощью Where выполняем условие
+                                                                   // по которому ищем наших сотрудников
+                .ToList(); // Переводим в список
 
+            // Выполняем цикл который перебирает список сотрудников
             foreach (var employee in employees)
             {
+                // Создаем нашу кнопку
                 Button empCard = new Button
                 {
                     Text = $"{employee.Name} \n {employee.PhoneNumber}",
@@ -91,18 +99,27 @@ namespace WF
                     Tag = employee
                 };
 
+                // При нажатии на кнопку (empCard.Click) вызываем функцию EmpCard_Click
                 empCard.Click += EmpCard_Click!;
                 EmployeePanel.Controls.Add(empCard);
             }
         }
+
+        // Функция открывающая окно для редактирования информации о сотруднике
         private void EmpCard_Click(object sender, EventArgs e)
         {
+            // выполняем проверку что наш объект который вызывает функцию является кнопкой
+            // и что тег кнопки является сотрудником
             if (sender is Button button && button.Tag is Employee emp)
             {
+                // Запускаем наше вторую форму (окно) и передаем в нее необходимые данные:
+                // (сотрудник: emp, и база данных: _context)
                 using (var editForm = new EditEmployeeForm(emp, _context))
                 {
+                    // Делаем проверку на результат выполнения нашего окна
                     if (editForm.ShowDialog() == DialogResult.OK)
                     {
+                        //В случае если наше новое окно возвращает результат "OK" то обнавляем панель
                         EmployeePanel.Controls.Clear();
                         LoadEmployees(emp.SubOrganization!.Id);
                     }
@@ -110,12 +127,17 @@ namespace WF
             }
         }
 
+        // Функция для добавления нового сотрудника
         private void AddEmoployee_Click(object sender, EventArgs e)
         {
+            // Открывает новое окно CreateEmployee и передаем туда данные из глобальных переменных
+            // (_subOrganization, _context)
             using (var createForm = new CreateEmployee(_subOrganization, _context))
             {
+                // Делаем проверку на результат выполнения нашего окна
                 if (createForm.ShowDialog() == DialogResult.OK)
                 {
+                    //В случае если наше новое окно возвращает результат "OK" то обнавляем панель
                     EmployeePanel.Controls.Clear();
                     LoadEmployees(_subOrganization.Id);
                 }

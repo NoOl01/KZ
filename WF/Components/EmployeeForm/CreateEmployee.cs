@@ -14,49 +14,37 @@ namespace WF.Components
 {
     public partial class CreateEmployee : Form
     {
+        // Ининициализируем глобальные переменные
         private readonly DbConnect _context;
         private readonly SubOrganization _subOrganization;
+
+        // Инициализация формы (окна), форма получает данные о "подорганизациях" и о базе данныз
         public CreateEmployee(SubOrganization subOrganization, DbConnect context)
         {
+            // Инициализация базовых компонентов по умолчанию
             InitializeComponent();
+            // Заполняем наши глобальные переменные получаемыми данными
             _context = context;
             _subOrganization = subOrganization;
         }
 
-        private void NewPhoneInput_TextChanged(object sender, EventArgs e)
-        {
-            string validChars = "0123456789+() -#";
-            string newText = "";
-
-            foreach (char c in NewPhoneInput.Text)
-            {
-                if (validChars.Contains(c) && newText.Length < 20)
-                {
-                    newText += c;
-                }
-            }
-
-            if (NewPhoneInput.Text != newText)
-            {
-                int cursorPosition = NewPhoneInput.SelectionStart - (NewPhoneInput.Text.Length - newText.Length);
-                NewPhoneInput.Text = newText;
-                NewPhoneInput.SelectionStart = Math.Max(0, cursorPosition);
-            }
-        }
-
+        // Функция добавляющая нового сотрудника
         private void NewSaveButton_Click(object sender, EventArgs e)
         {
+            // Проверяем что наши поля не пустые
             if (NewPhoneInput.Text != "" && NewFioInput.Text != "")
             {
+                // Инициализируем новую форму Employee и записываем внутрь нужные данные
                 Employee emp = new Employee
                 {
                     Name = NewFioInput.Text,
                     PhoneNumber = NewPhoneInput.Text,
                     SubOrganization = _subOrganization
                 };
-                _context.Add(emp);
-                _context.SaveChanges();
-                DialogResult = DialogResult.OK;
+                _context.Add(emp); // Добавляем в БД нового сотрудника
+                _context.SaveChanges(); // Сохраняем изменения в БД
+                DialogResult = DialogResult.OK; // Возвращаем статус окна OK
+                Close(); // Закрываем окно
             }
         }
     }

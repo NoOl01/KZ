@@ -105,7 +105,6 @@
             PhoneInput.Name = "PhoneInput";
             PhoneInput.Size = new Size(380, 23);
             PhoneInput.TabIndex = 1;
-            PhoneInput.TextChanged += PhoneInput_TextChanged;
             // 
             // FioInput
             // 
