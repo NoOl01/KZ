@@ -1,0 +1,6 @@
+C:\Users\Anton\Desktop\WF\WF\obj\Debug\net9.0-windows\WF.Form1.resources
+C:\Users\Anton\Desktop\WF\WF\obj\Debug\net9.0-windows\WF.csproj.GenerateResource.cache
+C:\Users\Anton\Desktop\WF\WF\obj\Debug\net9.0-windows\WF.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Anton\Desktop\WF\WF\obj\Debug\net9.0-windows\WF.AssemblyInfoInputs.cache
+C:\Users\Anton\Desktop\WF\WF\obj\Debug\net9.0-windows\WF.AssemblyInfo.cs
+C:\Users\Anton\Desktop\WF\WF\obj\Debug\net9.0-windows\WF.csproj.CoreCompileInputs.cache
